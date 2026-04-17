@@ -4,24 +4,21 @@ const enviarPalpite = document.getElementById("try-btn");
 const mensagem = document.getElementById("msg");
 const containerResultados = document.querySelector(".resultados");
 
+// --- DEFINIÇÃO DOS SONS ---
+const somErro = new Audio('sons/erro.mp3');
+const somAcerto = new Audio('sons/acerto.mp3');
+const somVitoria = new Audio('sons/vitoria.mp3');
+
 let numeroSecreto = Math.floor(Math.random() * 100) + 1;
 
-// --- EVENT LISTENERS ---
-
-// Clique no botão Enviar
+// Event Listeners
 enviarPalpite.addEventListener("click", sendAnswer);
-
-// Clique no botão Reiniciar
 reiniciarQuiz.addEventListener("click", restartQuiz);
 
-// Clique na tecla Enter (PC e Celular)
-valorPalpite.addEventListener("keypress", function(event) {
-    if (event.key === "Enter") {
-        sendAnswer();
-    }
+// Tecla Enter
+valorPalpite.addEventListener("keypress", function(e) {
+    if (e.key === "Enter") sendAnswer();
 });
-
-// --- FUNÇÕES ---
 
 function sendAnswer() {
     const palpite = Number(valorPalpite.value);  
@@ -32,15 +29,26 @@ function sendAnswer() {
     }
 
     if (palpite === numeroSecreto) {
+        // --- SOM DE ACERTO E VITÓRIA ---
+        somAcerto.play();
+        somVitoria.play();
+
         mensagem.textContent = "Você acertou, PARABÉNS! Reiniciando em 5 segundos...";
         enviarPalpite.disabled = true;
 
         setTimeout(() => {
             restartQuiz();
             enviarPalpite.disabled = false;
+            
+            // Para a música de vitória ao reiniciar
+            somVitoria.pause();
+            somVitoria.currentTime = 0;
         }, 5000);
 
     } else {
+        // --- SOM DE ERRO ---
+        somErro.play();
+
         mensagem.textContent = "Você errou! Veja a dica abaixo:";
         
         let iconeSeta = (palpite > numeroSecreto) ? "arrow_downward" : "arrow_upward";
@@ -52,9 +60,8 @@ function sendAnswer() {
             </div>
         `;
 
-        // Mantém o scroll no final do histórico
+        // Scroll automático e foco
         containerResultados.scrollTop = containerResultados.scrollHeight;
-
         valorPalpite.value = "";
         valorPalpite.focus();
     }
@@ -64,6 +71,13 @@ function restartQuiz() {
     numeroSecreto = Math.floor(Math.random() * 100) + 1;
     valorPalpite.value = "";
     mensagem.textContent = "Jogo reiniciado! Tente adivinhar.";
+    
+    // Limpa o histórico
     containerResultados.innerHTML = "Historicos:";
+    
+    // Para a música caso o usuário reinicie manualmente
+    somVitoria.pause();
+    somVitoria.currentTime = 0;
+
     console.log("Novo número secreto:", numeroSecreto);
 }
