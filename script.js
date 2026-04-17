@@ -5,9 +5,17 @@ const mensagem = document.getElementById("msg");
 const containerResultados = document.querySelector(".resultados");
 
 // --- DEFINIÇÃO DOS SONS ---
+// Substitua as definições antigas por estas:
 const somErro = new Audio('sons/erro.mpeg');
+somErro.preload = 'auto';
+
 const somAcerto = new Audio('sons/acerto.mpeg');
+somAcerto.preload = 'auto';
+
 const somVitoria = new Audio('sons/vitoria.mpeg');
+somVitoria.preload = 'auto';
+
+
 
 let numeroSecreto = Math.floor(Math.random() * 100) + 1;
 
