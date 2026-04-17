@@ -5,9 +5,9 @@ const mensagem = document.getElementById("msg");
 const containerResultados = document.querySelector(".resultados");
 
 // --- DEFINIÇÃO DOS SONS (Usando a pasta musica/) ---
-const somErro = new Audio('musica/erro.mpeg');
-const somAcerto = new Audio('musica/acerto.mpeg');
-const somVitoria = new Audio('musica/vitoria.mpeg');
+const somErro = new Audio('musica/erro.mp3');
+const somAcerto = new Audio('musica/acerto.mp3');
+const somVitoria = new Audio('musica/vitoria.mp3');
 
 // Pre-carregamento para evitar atrasos
 somErro.preload = 'auto';
