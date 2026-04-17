@@ -4,12 +4,12 @@ const enviarPalpite = document.getElementById("try-btn");
 const mensagem = document.getElementById("msg");
 const containerResultados = document.querySelector(".resultados");
 
-// --- DEFINIÇÃO DOS SONS (Usando a pasta musica/) ---
+// --- DEFINIÇÃO DOS SONS (Mudei para .mp3 que é universal) ---
 const somErro = new Audio('musica/erro.mp3');
 const somAcerto = new Audio('musica/acerto.mp3');
 const somVitoria = new Audio('musica/vitoria.mp3');
 
-// Pre-carregamento para evitar atrasos
+// Garante o carregamento
 somErro.preload = 'auto';
 somAcerto.preload = 'auto';
 somVitoria.preload = 'auto';
@@ -17,22 +17,26 @@ somVitoria.preload = 'auto';
 let numeroSecreto = Math.floor(Math.random() * 100) + 1;
 
 // --- EVENT LISTENERS ---
-
 enviarPalpite.addEventListener("click", sendAnswer);
 reiniciarQuiz.addEventListener("click", restartQuiz);
 
-// Detecta Enter no teclado
 valorPalpite.addEventListener("keypress", (e) => {
     if (e.key === "Enter") sendAnswer();
 });
 
-// --- FUNÇÕES ---
-
-// Função auxiliar para tocar o som de forma limpa
+// --- FUNÇÃO PARA TOCAR SOM ---
 function tocarSom(audio) {
+    // Reset fundamental para navegadores mobile
     audio.pause();
     audio.currentTime = 0;
-    audio.play().catch(e => console.log("Aguardando interação do usuário para tocar som."));
+    
+    // O play() retorna uma promessa, tratamos o erro de bloqueio do navegador
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+        playPromise.catch(error => {
+            console.log("O navegador bloqueou o som. Clique na tela primeiro!");
+        });
+    }
 }
 
 function sendAnswer() {
@@ -44,7 +48,6 @@ function sendAnswer() {
     }
 
     if (palpite === numeroSecreto) {
-        // VITÓRIA
         tocarSom(somAcerto);
         tocarSom(somVitoria);
 
@@ -55,11 +58,9 @@ function sendAnswer() {
             restartQuiz();
             enviarPalpite.disabled = false;
             somVitoria.pause();
-            somVitoria.currentTime = 0;
         }, 5000);
 
     } else {
-        // ERRO
         tocarSom(somErro);
         mensagem.textContent = "Você errou! Veja a dica abaixo:";
         
@@ -72,9 +73,7 @@ function sendAnswer() {
             </div>
         `;
 
-        // Scroll automático para o último palpite
         containerResultados.scrollTop = containerResultados.scrollHeight;
-
         valorPalpite.value = "";
         valorPalpite.focus();
     }
@@ -84,13 +83,7 @@ function restartQuiz() {
     numeroSecreto = Math.floor(Math.random() * 100) + 1;
     valorPalpite.value = "";
     mensagem.textContent = "Jogo reiniciado! Tente adivinhar.";
-    
-    // Limpa o histórico mantendo o título
     containerResultados.innerHTML = "Historicos:";
-    
-    // Para a música de vitória
     somVitoria.pause();
     somVitoria.currentTime = 0;
-
-    console.log("Novo número secreto:", numeroSecreto);
 }
