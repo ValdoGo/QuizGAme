@@ -1,0 +1,187 @@
+/* Basic Reset */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #42E0D1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 1rem;
+  font-family: sans-serif;
+}
+
+
+
+.container {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  min-height: 500px;
+  width: 800px;
+  content-align: center;
+  border-radius: 1rem;
+
+ 
+}
+
+.topinfo {
+  display: flex;
+  flex-direction: column;
+  height: 100px;
+  color: #e86a33;
+  margin-top: 50px;
+  font-size: 1.5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.topinfo p {
+
+  height: 100px;
+  color: #121214;
+  margin-top: 40px;
+  font-size: 1.5rem;
+  justify-content: center;
+  align-items: center;
+  
+  
+}
+
+.inputinfo {
+  display: flex;
+  justify-content: center; /* Centraliza horizontalmente dentro da div */
+  margin-top: 20px;
+  width: 100%;             /* Ocupa a largura do container pai */
+}
+
+.inputinfo input {
+  padding: 12px;           /* Espaçamento interno */
+  width: 80%;              /* Ocupa 80% da largura da div */
+  max-width: 400px;        /* Não deixa passar de 400px de largura */
+  border: 2px solid #e86a33; /* Borda na cor do seu título */
+  border-radius: 8px;      /* Bordas arredondadas */
+  font-size: 1rem;
+  outline: none;           /* Remove a borda azul padrão do navegador ao clicar */
+  background-color: #ebeff5;
+}
+
+.r-esult{
+  display: flex;
+  
+  width: 60px;
+  background-color:#e86a33;
+  justify-content: center; /* Centraliza horizontalmente dentro da div */
+  margin: 20px;
+  border-radius: 8px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+
+}
+
+.r-esult:hover{
+  /* 2. Faz o elemento crescer 10% (1.1) */
+  transform: scale(1.05); 
+  
+  /* Opcional: Escurecer um pouco a cor para dar profundidade */
+  background-color: #d15926;
+
+}
+
+.resultados{
+  display: flex;
+  width: 80%;
+  background-color:#ebeff5;
+  justify-content: center; /* Centraliza horizontalmente dentro da div */
+  margin: auto;
+  border: solid 0.1rem ;
+  border-radius: 8px;
+  min-height: 100px;
+  margin-top:30px;
+  margin-bottom:10px;
+
+  align-items: center;
+ /* O AJUSTE DO ESPAÇO: */
+               /* Ajuste esse valor (10px, 15px, 20px) como preferir */
+  padding: 10px;          /* Espaço interno para os itens não colarem na borda */
+  flex-wrap: wrap;        /* Importante: se tiver muitos resultados, eles quebram a linha */
+
+}
+
+.botoes {
+  display: flex;
+  width: 80%;
+  margin: 0 auto 10px auto; /* Centraliza a div e dá margem embaixo */
+  height: 100px;
+  align-items: center;      /* Centraliza os botões verticalmente */
+  gap: 25px;                /* Cria um espaço elegante entre os dois botões */
+}
+
+.botao {
+  flex: 1;                  /* O SEGREDO: Faz cada botão ocupar 50% da largura */
+  height: 50px;             /* Altura fixa para os botões */
+  border: none;
+  border-radius: 8px;
+  background-color: #e86a33; /* Cor secundária do seu projeto */
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease; /* Para o hover ficar suave */
+  
+  /* Sombra leve para dar profundidade */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Efeito ao passar o mouse */
+.botao:hover {
+  background-color: #e86a34;
+  transform: translateY(-3px); /* Sobe um pouquinho */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Efeito ao clicar */
+.botao:active {
+  transform: translateY(0);
+}
+
+
+/*CELULARES*/
+
+/* Quando a tela for menor que 768px (celulares e tablets) */
+@media (max-width: 500px) {
+  .topinfo p {
+    font-size: 1.1rem;   /* Tamanho menor para não quebrar o layout */
+    margin-top: 20px;    /* Reduzi a margem para economizar espaço */
+    height: auto;        /* Deixe a altura automática para evitar cortes */
+    text-align: center;  /* Garante que o texto fique centralizado */
+  }
+  
+  .topinfo h1 {
+    font-size: 1.8rem;   /* Aproveite para diminuir o título também */
+  }
+}
+
+
+.assinatura {
+  position: absolute; /* Fixa em relação à página */
+  bottom: 20px;       /* Distância do fundo da tela */
+  width: 100%;
+  text-align: center;
+  color: #ffffff;     /* Cor branca para contrastar com o fundo verde */
+  font-size: 0.9rem;
+  font-family: sans-serif;
+  opacity: 0.8;       /* Deixa um pouco mais discreto */
+}
+
+.assinatura strong {
+  color: #121214;     /* Destaca seu nome com uma cor mais forte */
+  text-decoration: underline;
+}
