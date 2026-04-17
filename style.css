@@ -95,24 +95,23 @@ body {
 
 }
 
-.resultados{
-  display: flex;
-  width: 80%;
-  background-color:#ebeff5;
-  justify-content: center; /* Centraliza horizontalmente dentro da div */
-  margin: auto;
-  border: solid 0.1rem ;
-  border-radius: 8px;
-  min-height: 100px;
-  margin-top:30px;
-  margin-bottom:10px;
-
-  align-items: center;
- /* O AJUSTE DO ESPAÇO: */
-               /* Ajuste esse valor (10px, 15px, 20px) como preferir */
-  padding: 10px;          /* Espaço interno para os itens não colarem na borda */
-  flex-wrap: wrap;        /* Importante: se tiver muitos resultados, eles quebram a linha */
-
+.resultados {
+    display: flex;
+    width: 80%;
+    background-color: #ebeff5;
+    justify-content: center;
+    margin: 30px auto 10px auto;
+    border: solid 0.1rem #ccc;
+    border-radius: 8px;
+    min-height: 100px;
+    
+    /* AJUSTES PARA MOBILE E HISTÓRICO GRANDE */
+    max-height: 200px;       /* Não deixa crescer mais que isso */
+    overflow-y: auto;        /* Cria o scroll interno */
+    padding: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: flex-start; /* Alinha os itens no topo do histórico */
 }
 
 .botoes {
