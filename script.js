@@ -2,13 +2,26 @@ const valorPalpite = document.getElementById("valor-input");
 const reiniciarQuiz = document.getElementById("restart-btn");
 const enviarPalpite = document.getElementById("try-btn");
 const mensagem = document.getElementById("msg");
-const containerResultados = document.querySelector(".resultados"); // Coloquei aqui fora para facilitar
+const containerResultados = document.querySelector(".resultados");
 
 let numeroSecreto = Math.floor(Math.random() * 100) + 1;
 
-// Event Listeners
+// --- EVENT LISTENERS ---
+
+// Clique no botão Enviar
 enviarPalpite.addEventListener("click", sendAnswer);
+
+// Clique no botão Reiniciar
 reiniciarQuiz.addEventListener("click", restartQuiz);
+
+// Clique na tecla Enter (PC e Celular)
+valorPalpite.addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        sendAnswer();
+    }
+});
+
+// --- FUNÇÕES ---
 
 function sendAnswer() {
     const palpite = Number(valorPalpite.value);  
@@ -25,7 +38,6 @@ function sendAnswer() {
         setTimeout(() => {
             restartQuiz();
             enviarPalpite.disabled = false;
-          
         }, 5000);
 
     } else {
@@ -40,6 +52,9 @@ function sendAnswer() {
             </div>
         `;
 
+        // Mantém o scroll no final do histórico
+        containerResultados.scrollTop = containerResultados.scrollHeight;
+
         valorPalpite.value = "";
         valorPalpite.focus();
     }
@@ -49,9 +64,6 @@ function restartQuiz() {
     numeroSecreto = Math.floor(Math.random() * 100) + 1;
     valorPalpite.value = "";
     mensagem.textContent = "Jogo reiniciado! Tente adivinhar.";
-    
-    // LIMPA O HISTÓRICO
     containerResultados.innerHTML = "Historicos:";
-    
     console.log("Novo número secreto:", numeroSecreto);
 }
