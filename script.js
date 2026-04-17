@@ -4,18 +4,26 @@ const enviarPalpite = document.getElementById("try-btn");
 const mensagem = document.getElementById("msg");
 const containerResultados = document.querySelector(".resultados");
 
-// --- CONFIGURAÇÃO DE ÁUDIO ---
-const sons = {
-    erro: new Audio('musica/erro.mp3'),
-    acerto: new Audio('musica/acerto.mp3'),
-    vitoria: new Audio('musica/vitoria.mp3')
-};
+// No topo do arquivo
+const somErro = new Audio('musica/erro.mp3');
+const somAcerto = new Audio('musica/acerto.mp3');
+const somVitoria = new Audio('musica/vitoria.mp3');
 
-// Pré-carrega os sons para estarem prontos
-Object.values(sons).forEach(son => {
-    son.preload = 'auto';
-    son.load(); 
-});
+// Função para tocar que lida com a restrição dos navegadores
+function tocarSom(audio) {
+    // 1. Reset
+    audio.pause();
+    audio.currentTime = 0;
+    
+    // 2. Tentar tocar e capturar erro silencioso
+    const promessa = audio.play();
+    
+    if (promessa !== undefined) {
+        promessa.catch(error => {
+            console.warn("O navegador bloqueou o áudio. Isso acontece se você não clicar na página antes de jogar.");
+        });
+    }
+}
 
 let numeroSecreto = Math.floor(Math.random() * 100) + 1;
 
