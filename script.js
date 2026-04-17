@@ -4,19 +4,22 @@ const enviarPalpite = document.getElementById("try-btn");
 const mensagem = document.getElementById("msg");
 const containerResultados = document.querySelector(".resultados");
 
-// --- DEFINIÇÃO DOS SONS (Mudei para .mp3 que é universal) ---
-const somErro = new Audio('musica/erro.mp3');
-const somAcerto = new Audio('musica/acerto.mp3');
-const somVitoria = new Audio('musica/vitoria.mp3');
+// --- CONFIGURAÇÃO DE ÁUDIO ---
+const sons = {
+    erro: new Audio('musica/erro.mp3'),
+    acerto: new Audio('musica/acerto.mp3'),
+    vitoria: new Audio('musica/vitoria.mp3')
+};
 
-// Garante o carregamento
-somErro.preload = 'auto';
-somAcerto.preload = 'auto';
-somVitoria.preload = 'auto';
+// Pré-carrega os sons para estarem prontos
+Object.values(sons).forEach(son => {
+    son.preload = 'auto';
+    son.load(); 
+});
 
 let numeroSecreto = Math.floor(Math.random() * 100) + 1;
 
-// --- EVENT LISTENERS ---
+// --- EVENTOS ---
 enviarPalpite.addEventListener("click", sendAnswer);
 reiniciarQuiz.addEventListener("click", restartQuiz);
 
@@ -24,19 +27,16 @@ valorPalpite.addEventListener("keypress", (e) => {
     if (e.key === "Enter") sendAnswer();
 });
 
-// --- FUNÇÃO PARA TOCAR SOM ---
-function tocarSom(audio) {
-    // Reset fundamental para navegadores mobile
+// --- LÓGICA DE SOM ---
+function play(audio) {
+    // Reset fundamental para permitir repetição rápida
     audio.pause();
     audio.currentTime = 0;
     
-    // O play() retorna uma promessa, tratamos o erro de bloqueio do navegador
-    const playPromise = audio.play();
-    if (playPromise !== undefined) {
-        playPromise.catch(error => {
-            console.log("O navegador bloqueou o som. Clique na tela primeiro!");
-        });
-    }
+    // Promessa para lidar com bloqueio de autoplay do navegador
+    audio.play().catch(err => {
+        console.warn("Áudio bloqueado pelo navegador. Interaja com a página primeiro.");
+    });
 }
 
 function sendAnswer() {
@@ -48,8 +48,8 @@ function sendAnswer() {
     }
 
     if (palpite === numeroSecreto) {
-        tocarSom(somAcerto);
-        tocarSom(somVitoria);
+        play(sons.acerto);
+        play(sons.vitoria);
 
         mensagem.textContent = "Você acertou, PARABÉNS! Reiniciando em 5 segundos...";
         enviarPalpite.disabled = true;
@@ -57,11 +57,11 @@ function sendAnswer() {
         setTimeout(() => {
             restartQuiz();
             enviarPalpite.disabled = false;
-            somVitoria.pause();
+            sons.vitoria.pause();
         }, 5000);
 
     } else {
-        tocarSom(somErro);
+        play(sons.erro);
         mensagem.textContent = "Você errou! Veja a dica abaixo:";
         
         let iconeSeta = (palpite > numeroSecreto) ? "arrow_downward" : "arrow_upward";
@@ -84,6 +84,6 @@ function restartQuiz() {
     valorPalpite.value = "";
     mensagem.textContent = "Jogo reiniciado! Tente adivinhar.";
     containerResultados.innerHTML = "Historicos:";
-    somVitoria.pause();
-    somVitoria.currentTime = 0;
+    sons.vitoria.pause();
+    sons.vitoria.currentTime = 0;
 }
