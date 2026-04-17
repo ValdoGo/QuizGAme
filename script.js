@@ -6,13 +6,13 @@ const containerResultados = document.querySelector(".resultados");
 
 // --- DEFINIÇÃO DOS SONS ---
 // Substitua as definições antigas por estas:
-const somErro = new Audio('sons/erro.mpeg');
+const somErro = new Audio('musica/erro.mpeg');
 somErro.preload = 'auto';
 
-const somAcerto = new Audio('sons/acerto.mpeg');
+const somAcerto = new Audio('musica/acerto.mpeg');
 somAcerto.preload = 'auto';
 
-const somVitoria = new Audio('sons/vitoria.mpeg');
+const somVitoria = new Audio('musica/vitoria.mpeg');
 somVitoria.preload = 'auto';
 
 
