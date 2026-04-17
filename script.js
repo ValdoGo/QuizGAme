@@ -4,29 +4,36 @@ const enviarPalpite = document.getElementById("try-btn");
 const mensagem = document.getElementById("msg");
 const containerResultados = document.querySelector(".resultados");
 
-// --- DEFINIÇÃO DOS SONS ---
-// Substitua as definições antigas por estas:
+// --- DEFINIÇÃO DOS SONS (Usando a pasta musica/) ---
 const somErro = new Audio('musica/erro.mpeg');
-somErro.preload = 'auto';
-
 const somAcerto = new Audio('musica/acerto.mpeg');
-somAcerto.preload = 'auto';
-
 const somVitoria = new Audio('musica/vitoria.mpeg');
+
+// Pre-carregamento para evitar atrasos
+somErro.preload = 'auto';
+somAcerto.preload = 'auto';
 somVitoria.preload = 'auto';
-
-
 
 let numeroSecreto = Math.floor(Math.random() * 100) + 1;
 
-// Event Listeners
+// --- EVENT LISTENERS ---
+
 enviarPalpite.addEventListener("click", sendAnswer);
 reiniciarQuiz.addEventListener("click", restartQuiz);
 
-// Detecta Enter
+// Detecta Enter no teclado
 valorPalpite.addEventListener("keypress", (e) => {
     if (e.key === "Enter") sendAnswer();
 });
+
+// --- FUNÇÕES ---
+
+// Função auxiliar para tocar o som de forma limpa
+function tocarSom(audio) {
+    audio.pause();
+    audio.currentTime = 0;
+    audio.play().catch(e => console.log("Aguardando interação do usuário para tocar som."));
+}
 
 function sendAnswer() {
     const palpite = Number(valorPalpite.value);  
@@ -37,8 +44,9 @@ function sendAnswer() {
     }
 
     if (palpite === numeroSecreto) {
-        somAcerto.play();
-        somVitoria.play();
+        // VITÓRIA
+        tocarSom(somAcerto);
+        tocarSom(somVitoria);
 
         mensagem.textContent = "Você acertou, PARABÉNS! Reiniciando em 5 segundos...";
         enviarPalpite.disabled = true;
@@ -51,7 +59,8 @@ function sendAnswer() {
         }, 5000);
 
     } else {
-        somErro.play();
+        // ERRO
+        tocarSom(somErro);
         mensagem.textContent = "Você errou! Veja a dica abaixo:";
         
         let iconeSeta = (palpite > numeroSecreto) ? "arrow_downward" : "arrow_upward";
@@ -63,7 +72,9 @@ function sendAnswer() {
             </div>
         `;
 
+        // Scroll automático para o último palpite
         containerResultados.scrollTop = containerResultados.scrollHeight;
+
         valorPalpite.value = "";
         valorPalpite.focus();
     }
@@ -73,8 +84,11 @@ function restartQuiz() {
     numeroSecreto = Math.floor(Math.random() * 100) + 1;
     valorPalpite.value = "";
     mensagem.textContent = "Jogo reiniciado! Tente adivinhar.";
+    
+    // Limpa o histórico mantendo o título
     containerResultados.innerHTML = "Historicos:";
     
+    // Para a música de vitória
     somVitoria.pause();
     somVitoria.currentTime = 0;
 
